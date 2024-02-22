@@ -1,6 +1,6 @@
-import { GenericObject } from "../pages/home";
 import { NewsArticles } from "../types/NewsData";
 import * as newsArticles from "../../public/data2023.json";
+import { GenericObject } from "../types/Home";
 
 const useGetNewsDataObj = () => {
   const articles = newsArticles as NewsArticles;
