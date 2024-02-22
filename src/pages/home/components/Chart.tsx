@@ -69,26 +69,32 @@ function Chart() {
       {
         title: {
           text: "Stock Price(dollars)",
+          style: {
+            fontSize: "16px",
+          },
         },
       },
       {
         opposite: true,
         title: {
           text: "News Count(numbers)",
+          style: {
+            fontSize: "16px",
+          },
         },
       },
     ],
   };
 
   return (
-    <>
+    <div className="mt-10">
       <ReactApexChart
         type="line"
         options={options}
         series={series}
         height={500}
       />
-    </>
+    </div>
   );
 }
 

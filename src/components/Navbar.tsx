@@ -1,7 +1,7 @@
 export const Navbar = () => {
   return (
     <>
-      <nav className="flex items-center flex-wrap bg-blue-400 p-3 ">
+      <nav className="flex items-center flex-wrap bg-blue-400 p-3 mb-2">
         <a href="#" className="inline-flex items-center p-2 mr-4 ">
           <svg
             viewBox="0 0 24 24"
