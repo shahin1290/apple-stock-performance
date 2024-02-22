@@ -97,7 +97,11 @@ function ChartTollbar() {
           selection={month === "All"}
         />
       </div>
-      <StatusCard totalNewsCount={totalNewsCount} />
+      <StatusCard
+        totalNewsCount={totalNewsCount}
+        selection1={selection1}
+        selection2={selection2}
+      />
     </div>
   );
 }
