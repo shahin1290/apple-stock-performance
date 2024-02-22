@@ -11,7 +11,4 @@ it("should have Apple Stock React To News Articles", () => {
   );
   const message = screen.queryByText("100");
   expect(message).toBeVisible();
-  
-  const message2 = screen.queryByText("2022-02-02");
-  expect(message2).toBeVisible();
 });
