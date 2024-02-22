@@ -1,140 +1,100 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useGetStockWithNewsObj from "../../../hooks/useStockWithNewsObj";
 import Button from "../../../components/Button";
 import StatusCard from "./StatusCard";
 
 function ChartTollbar() {
-  const [selection, setSelection] = useState("All");
-  const [totalNewsCount, setTotalNewsCount] = useState<number>(657);
+  const [selection1, setSelection1] = useState("");
+  const [selection2, setSelection2] = useState("");
+  const [month, setMonth] = useState("");
+  const [totalNewsCount, setTotalNewsCount] = useState<number>(0);
   const stockDateWithNewsCount = useGetStockWithNewsObj();
 
-  const newsCountWithSelection = (
-    minTimeStamp: number,
-    maxTimeStamp2: number
-  ) => {
-    const asArray = Object.entries(stockDateWithNewsCount);
-    let counts = 0;
-    asArray.forEach(([key, value]) => {
-      if (+key >= minTimeStamp && +key <= maxTimeStamp2) {
-        counts += value;
-      }
-    });
+  const newsCountWithSelection = useCallback(
+    (minTimeStamp: number, maxTimeStamp2: number) => {
+      const asArray = Object.entries(stockDateWithNewsCount);
+      let counts = 0;
+      asArray.forEach(([key, value]) => {
+        if (+key >= minTimeStamp && +key <= maxTimeStamp2) {
+          counts += value;
+        }
+      });
 
-    setTotalNewsCount(counts);
-  };
+      setTotalNewsCount(counts);
+    },
+    [stockDateWithNewsCount]
+  );
 
-  const updateData = (timeline: string) => {
-    setSelection(timeline);
-    switch (timeline) {
-      case "May":
-        ApexCharts.exec(
-          "area-datetime",
-          "zoomX",
-          new Date("2023-05-01").getTime(),
-          new Date("2023-05-31").getTime()
-        );
-        newsCountWithSelection(
-          new Date("2023-05-01").getTime(),
-          new Date("2023-05-31").getTime()
-        );
-        break;
-      case "Jun":
-        ApexCharts.exec(
-          "area-datetime",
-          "zoomX",
-          new Date("2023-06-01").getTime(),
-          new Date("2023-06-30").getTime()
-        );
-        newsCountWithSelection(
-          new Date("2023-06-01").getTime(),
-          new Date("2023-06-30").getTime()
-        );
-        break;
-      case "Jul":
-        ApexCharts.exec(
-          "area-datetime",
-          "zoomX",
-          new Date("2023-07-01").getTime(),
-          new Date("2023-07-31").getTime()
-        );
-        newsCountWithSelection(
-          new Date("2023-07-01").getTime(),
-          new Date("2023-07-31").getTime()
-        );
-        break;
-      case "Aug":
-        ApexCharts.exec(
-          "area-datetime",
-          "zoomX",
-          new Date("2023-08-01").getTime(),
-          new Date("2023-08-31").getTime()
-        );
-        newsCountWithSelection(
-          new Date("2023-08-01").getTime(),
-          new Date("2023-08-31").getTime()
-        );
-        break;
-      case "Sep":
-        ApexCharts.exec(
-          "area-datetime",
-          "zoomX",
-          new Date("2023-09-01").getTime(),
-          new Date("2023-09-30").getTime()
-        );
-        newsCountWithSelection(
-          new Date("2023-09-01").getTime(),
-          new Date("2023-09-30").getTime()
-        );
-        break;
-      case "All":
-        ApexCharts.exec(
-          "area-datetime",
-          "zoomX",
-          new Date("2023-05-01").getTime(),
-          new Date("2023-09-30").getTime()
-        );
-        newsCountWithSelection(
-          new Date("2023-05-01").getTime(),
-          new Date("2023-09-30").getTime()
-        );
-        break;
-      default:
-    }
-  };
+  useEffect(() => {
+    setSelection1("2023-05-01");
+    setSelection2("2023-09-30");
+    setMonth("All");
+  }, []);
+
+  useEffect(() => {
+    const timeStamp1 = new Date(selection1).getTime();
+    const timeStamp2 = new Date(selection2).getTime();
+
+    ApexCharts.exec("area-datetime", "zoomX", timeStamp1, timeStamp2);
+    newsCountWithSelection(timeStamp1, timeStamp2);
+  }, [newsCountWithSelection, selection1, selection2]);
 
   return (
     <div>
       <div className="flex justify-center gap-2 my-8">
         <Button
-          handleClick={() => updateData("May")}
+          handleClick={() => {
+            setSelection1("2023-05-01");
+            setSelection2("2023-05-31");
+            setMonth("May");
+          }}
           title="May"
-          selection={selection === "May"}
+          selection={month === "May"}
         />
-
         <Button
-          handleClick={() => updateData("Jun")}
+          handleClick={() => {
+            setSelection1("2023-06-01");
+            setSelection2("2023-06-30");
+            setMonth("Jun");
+          }}
           title="Jun"
-          selection={selection === "Jun"}
+          selection={month === "Jun"}
         />
         <Button
-          handleClick={() => updateData("Jul")}
+          handleClick={() => {
+            setSelection1("2023-07-01");
+            setSelection2("2023-07-31");
+            setMonth("Jul");
+          }}
           title="Jul"
-          selection={selection === "Jul"}
+          selection={month === "Jul"}
         />
         <Button
-          handleClick={() => updateData("Aug")}
+          handleClick={() => {
+            setSelection1("2023-08-01");
+            setSelection2("2023-08-31");
+            setMonth("Aug");
+          }}
           title="Aug"
-          selection={selection === "Aug"}
+          selection={month === "Aug"}
         />
         <Button
-          handleClick={() => updateData("Sep")}
+          handleClick={() => {
+            setSelection1("2023-09-01");
+            setSelection2("2023-09-30");
+            setMonth("Sep");
+          }}
           title="Sep"
-          selection={selection === "Sep"}
+          selection={month === "Sep"}
         />
         <Button
-          handleClick={() => updateData("All")}
+          handleClick={() => {
+            setSelection1("2023-05-01");
+            setSelection2("2023-09-30");
+            setMonth("All");
+          }}
           title="All"
-          selection={selection === "All"}
+          selection={month === "All"}
         />
       </div>
       <StatusCard totalNewsCount={totalNewsCount} />
