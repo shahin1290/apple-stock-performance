@@ -2,41 +2,32 @@ import ReactApexChart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
 import useGetStockDataObj from "../../../hooks/useStockDataObj";
 import useGetStockWithNewsObj from "../../../hooks/useStockWithNewsObj";
+import { convertObjectToChartArray } from "../../../utils/helpers";
 
 function Chart() {
-    const dateWithstockPrices = useGetStockDataObj();
-    const stockDateWithNewsCount = useGetStockWithNewsObj();
-    
-  const getNewsCountArray = () => {
-    const result =
-      dateWithstockPrices &&
-      Object.keys(dateWithstockPrices).map((date) => [
-        +date,
-        stockDateWithNewsCount[date] ? stockDateWithNewsCount[date] : 0,
-      ]);
-    return result;
-  };
+  const dateWithstockPrices = useGetStockDataObj();
+  const stockDateWithNewsCount = useGetStockWithNewsObj();
 
-  const getStockPriceArray = () => {
-    const result =
-      dateWithstockPrices &&
-      Object.keys(dateWithstockPrices).map((date) => [
-        +date,
-        dateWithstockPrices[date] ? +dateWithstockPrices[date].toFixed(0) : 0,
-      ]);
-    return result;
-  };
+  const getNewsCountArray = convertObjectToChartArray(
+    dateWithstockPrices,
+    stockDateWithNewsCount
+  );
+
+  const getStockPriceArray = convertObjectToChartArray(
+    dateWithstockPrices,
+    dateWithstockPrices
+  );
 
   const series = [
     {
       name: "Stock Price",
       type: "area",
-      data: getStockPriceArray(),
+      data: getStockPriceArray,
     },
     {
       name: "News Count",
       type: "line",
-      data: getNewsCountArray(),
+      data: getNewsCountArray,
     },
   ];
 

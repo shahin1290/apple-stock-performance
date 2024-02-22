@@ -1,4 +1,4 @@
-import { GenericObject } from "../pages/home";
+import { GenericObject } from "../types/Home";
 import useReadCsv from "./useReadCsv";
 
 const useGetStockDataObj = () => {
